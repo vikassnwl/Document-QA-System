@@ -4,6 +4,7 @@ models/
 documents/
 sample_documents/
 tests/
+prompts/
 .env
 
 
