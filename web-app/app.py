@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import streamlit as st
 # from langchain_community.document_loaders import UnstructuredPDFLoader
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_text_splitters.character import CharacterTextSplitter
+from langchain_text_splitters.character import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 # from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_cohere.embeddings import CohereEmbeddings
@@ -28,12 +28,12 @@ def load_document(file_path):
 def setup_vectorstore(documents):
     # embeddings = HuggingFaceEmbeddings()
     embeddings = CohereEmbeddings(model="embed-english-light-v3.0")
-    text_splitter = CharacterTextSplitter(
-        separator="/n",
-        chunk_size=1000,
-        chunk_overlap=200
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=2000,
+        chunk_overlap=400
     )
-    doc_chunks = text_splitter.split_documents(documents)
+    full_text = "\n".join(doc.page_content for doc in documents)
+    doc_chunks = text_splitter.create_documents([full_text])
     vectorstore = FAISS.from_documents(doc_chunks, embeddings)
     return vectorstore
 
@@ -65,7 +65,7 @@ st.set_page_config(
     layout="centered"
 )
 
-st.title("🦙 Chat with Doc - LLAMA 3.1")
+st.title("📄 Chat with Doc")
 
 # initialize the chat history in streamlit session state
 if "chat_history" not in st.session_state:
