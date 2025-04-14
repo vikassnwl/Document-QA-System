@@ -34,9 +34,6 @@ Each has its own pros and cons:
 - Can hit **token limits** faster in longer conversations.
 
 ---
-Your outline of the `ConversationalRetrievalChain` workflow is already well-structured, but here’s an optimized and slightly expanded version with clarifications and best practices:
-
----
 
 ### **`ConversationalRetrievalChain` Workflow**  
 
